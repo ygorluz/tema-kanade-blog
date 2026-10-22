@@ -4,21 +4,21 @@ import Waves from "./Waves.vue";
 interface Props { compact?: boolean; title?: string; subtitle?: string }
 const { compact = false, title, subtitle } = Astro.props;
 ---
-<section class:list={["welcome-section", { compact }]} style={`background-image: url('${welcomeConfig.bgImage}')`} aria-label="Boas-vindas ao Blog">
+<section class:list={["welcome-section", { compact }]} style={`background-image: url('${welcomeConfig.bgImage}')`} aria-label="Boas-vindas ao Sabixão">
   <div class="hero-shade"></div>
   <div class="hero-content">
-    <span class="hero-eyebrow">{compact ? "UM ESPAÇO PARA BOAS IDEIAS" : "IDEIAS · TECNOLOGIA · HISTÓRIAS"}</span>
+    <span class="hero-eyebrow">{compact ? "SABIXÃO EDUCAÇÃO" : "AULAS · DICAS DE ESTUDO · CONHECIMENTO"}</span>
     <h1>{title || welcomeConfig.title}<span class="hero-sparkle" aria-hidden="true">✧</span></h1>
     <p>{subtitle || welcomeConfig.subTitle}</p>
-    {!compact && <a href="#main-content" class="hero-explore">Explore as publicações <span class="icon-[lucide--arrow-down]" aria-hidden="true"></span></a>}
+    {!compact && <a href="#main-content" class="hero-explore">Explore as aulas e conteúdos <span class="icon-[lucide--arrow-down]" aria-hidden="true"></span></a>}
   </div>
-  <span class="hero-side-note" aria-hidden="true">CADA DIA UMA NOVA HISTÓRIA</span>
+  <span class="hero-side-note" aria-hidden="true">O CONHECIMENTO TRANSFORMA</span>
   <Waves class="hero-waves" />
 </section>
 
 <style>
-.welcome-section { position: relative; height: 450px; background-size: cover; background-position: center 43%; display: flex; align-items: center; justify-content: center; text-align: center; color: white; overflow: hidden; }
-.hero-shade { position: absolute; inset: 0; background: linear-gradient(100deg, #29375c40, #14213b2e 50%, #20223960); }
+.welcome-section { position: relative; height: 450px; background-color: #262c3a; background-size: cover; background-position: center 35%; display: flex; align-items: center; justify-content: center; text-align: center; color: white; overflow: hidden; }
+.hero-shade { position: absolute; inset: 0; background: linear-gradient(100deg, #18223880, #131b2e60 50%, #171d2b90); }
 .hero-content { position: relative; z-index: 2; padding: 25px 20px 55px; text-shadow: 0 2px 18px #1f2c6150; }
 .hero-eyebrow { display: block; font-family: "Oxanium-Medium", sans-serif; font-size: 11px; letter-spacing: .28em; opacity: .92; margin-bottom: 19px; }
 .hero-content h1 { margin: 0 0 10px; font-size: clamp(30px, 3.5vw, 46px); letter-spacing: .06em; font-weight: 600; line-height: 1.5; }
