@@ -6,7 +6,7 @@ export const prerender = false;
 const COOKIE_NAME = 'admin_session';
 const EXPIRES_SEC = 7 * 24 * 60 * 60; // 7 dias
 
-export const POST: APIRoute = async ({ request }) => {
+export const POST: APIRoute = async ({ request, cookies }) => {
     try {
         const { password } = await request.json();
         if (!password) {
@@ -18,7 +18,17 @@ export const POST: APIRoute = async ({ request }) => {
             return new Response(JSON.stringify({ error: 'Senha incorreta.' }), { status: 401 });
         }
 
-        const cookieValue = `${COOKIE_NAME}=${encodeURIComponent(session)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${EXPIRES_SEC}`;
+        try {
+            cookies.set(COOKIE_NAME, session, {
+                path: '/',
+                httpOnly: true,
+                sameSite: 'lax',
+                maxAge: EXPIRES_SEC,
+                secure: true,
+            });
+        } catch {}
+
+        const cookieValue = `${COOKIE_NAME}=${encodeURIComponent(session)}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${EXPIRES_SEC}; Secure`;
 
         return new Response(JSON.stringify({ ok: true }), {
             status: 200,

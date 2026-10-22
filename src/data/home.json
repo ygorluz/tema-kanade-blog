@@ -1,0 +1,49 @@
+{
+  "hero": {
+    "eyebrow": "✦ Editorial & Tech Blog",
+    "title": "Ideias, design e engenharia para a nova era digital.",
+    "subtitle": "Artigos em profundidade sobre inteligência artificial, interfaces de alta performance, design systems e futuro do desenvolvimento web.",
+    "primaryCta": {
+      "text": "Explorar Artigos",
+      "href": "/blog"
+    },
+    "secondaryCta": {
+      "text": "Sobre o Projeto",
+      "href": "/sobre"
+    }
+  },
+  "newsletter": {
+    "title": "Fique à frente das tendências",
+    "description": "Receba curadorias exclusivas, análises aprofundadas e insights semanais direto no seu e-mail.",
+    "placeholder": "seu@email.com",
+    "buttonText": "Assinar Gratuitamente"
+  },
+  "sectionTitles": {
+    "featured": "Destaques da Redação",
+    "latestPosts": "Últimas Publicações",
+    "categories": "Editorias em Foco",
+    "newsletter": "Newsletter Semanal"
+  },
+  "features": [
+    {
+      "icon": "terminal",
+      "title": "Análises Técnicas",
+      "desc": "Estudos de caso reais de arquitetura de software, DevOps e engenharia de prompts."
+    },
+    {
+      "icon": "palette",
+      "title": "Design Systems",
+      "desc": "Acessibilidade, micro-interações, tipografia e tokens de design para produtos digitais."
+    },
+    {
+      "icon": "cpu",
+      "title": "Inteligência Artificial",
+      "desc": "O impacto prático dos modelos de linguagem e agentes autônomos no mercado de trabalho."
+    }
+  ],
+  "latestPosts": {
+    "limit": 6,
+    "btnText": "Ver Todos os Posts",
+    "btnLink": "/blog"
+  }
+}

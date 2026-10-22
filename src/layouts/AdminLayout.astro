@@ -1,9 +1,22 @@
 ---
 export const prerender = false;
+import { validateSession, COOKIE_NAME_EXPORT as COOKIE_NAME } from '../lib/auth';
 import AdminNav from '../components/admin/AdminNav';
 import CmsToaster from '../components/admin/CmsToaster';
 import DeployManager from '../components/admin/DeployManager';
 import '../styles/admin.css';
+
+const cookieHeader = Astro.request.headers.get('cookie') || '';
+const cookies = Object.fromEntries(
+    cookieHeader.split(';').map(c => {
+        const [k, ...v] = c.trim().split('=');
+        return [k, decodeURIComponent(v.join('='))];
+    })
+);
+const valid = await validateSession(cookies[COOKIE_NAME]);
+if (!valid) {
+    return Astro.redirect('/admin/login');
+}
 
 interface Props {
     title?: string;

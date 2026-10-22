@@ -128,9 +128,9 @@ export const POST: APIRoute = async ({ request }) => {
         const body = await request.json();
         const { action, path, content, message, sha, isBase64 } = body;
 
-        const GITHUB_TOKEN = import.meta.env.GITHUB_TOKEN;
-        const GITHUB_OWNER = import.meta.env.GITHUB_OWNER;
-        const GITHUB_REPO = import.meta.env.GITHUB_REPO;
+        const GITHUB_TOKEN = (typeof process !== 'undefined' && process.env?.GITHUB_TOKEN) || import.meta.env.GITHUB_TOKEN;
+        const GITHUB_OWNER = (typeof process !== 'undefined' && process.env?.GITHUB_OWNER) || import.meta.env.GITHUB_OWNER;
+        const GITHUB_REPO = (typeof process !== 'undefined' && process.env?.GITHUB_REPO) || import.meta.env.GITHUB_REPO;
 
         // Modo dev: sem credenciais GitHub → usa filesystem local
         if (!GITHUB_TOKEN || !GITHUB_OWNER || !GITHUB_REPO) {

@@ -32,10 +32,10 @@ export const GET: APIRoute = async ({ request }) => {
         return new Response(JSON.stringify({ error: 'Não autorizado' }), { status: 401 });
     }
 
-    const token = (import.meta.env.GITHUB_TOKEN ?? '').trim();
-    const owner = (import.meta.env.GITHUB_OWNER ?? '').trim();
-    const repo = (import.meta.env.GITHUB_REPO ?? '').trim();
-    const hookConfigured = Boolean((import.meta.env.DEPLOY_HOOK_URL ?? '').trim());
+    const token = ((typeof process !== 'undefined' && process.env?.GITHUB_TOKEN) || import.meta.env.GITHUB_TOKEN || '').trim();
+    const owner = ((typeof process !== 'undefined' && process.env?.GITHUB_OWNER) || import.meta.env.GITHUB_OWNER || '').trim();
+    const repo = ((typeof process !== 'undefined' && process.env?.GITHUB_REPO) || import.meta.env.GITHUB_REPO || '').trim();
+    const hookConfigured = Boolean(((typeof process !== 'undefined' && process.env?.DEPLOY_HOOK_URL) || import.meta.env.DEPLOY_HOOK_URL || '').trim());
 
     if (!token || !owner || !repo) {
         return new Response(JSON.stringify({
@@ -62,8 +62,8 @@ export const GET: APIRoute = async ({ request }) => {
 
         // Fonte primária: API Vercel (status REAL do último deploy de produção).
         // Usa as envs VERCEL_TOKEN + PROJECT_ID configuradas no provisionamento.
-        const vercelToken = (import.meta.env.VERCEL_TOKEN ?? '').trim();
-        const projectId = (import.meta.env.PROJECT_ID ?? '').trim();
+        const vercelToken = ((typeof process !== 'undefined' && process.env?.VERCEL_TOKEN) || import.meta.env.VERCEL_TOKEN || '').trim();
+        const projectId = ((typeof process !== 'undefined' && process.env?.PROJECT_ID) || import.meta.env.PROJECT_ID || '').trim();
         if (vercelToken && projectId) {
             const vResp = await fetch(
                 `https://api.vercel.com/v13/deployments?projectId=${encodeURIComponent(projectId)}&target=production&limit=20`,
@@ -148,7 +148,7 @@ export const POST: APIRoute = async ({ request }) => {
         return new Response(JSON.stringify({ error: 'Não autorizado' }), { status: 401 });
     }
 
-    const hookUrl = (import.meta.env.DEPLOY_HOOK_URL ?? '').trim();
+    const hookUrl = ((typeof process !== 'undefined' && process.env?.DEPLOY_HOOK_URL) || import.meta.env.DEPLOY_HOOK_URL || '').trim();
     if (!hookUrl) {
         return new Response(JSON.stringify({ error: 'Deploy Hook não configurado. Contate o suporte.' }), { status: 500 });
     }

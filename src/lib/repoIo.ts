@@ -12,9 +12,9 @@ import { fileURLToPath } from 'node:url';
 const PROJECT_ROOT = nodePath.resolve(fileURLToPath(import.meta.url), '../../../');
 
 function ghEnv() {
-  const token = import.meta.env.GITHUB_TOKEN;
-  const owner = import.meta.env.GITHUB_OWNER;
-  const repo = import.meta.env.GITHUB_REPO;
+  const token = (typeof process !== 'undefined' && process.env?.GITHUB_TOKEN) || import.meta.env.GITHUB_TOKEN;
+  const owner = (typeof process !== 'undefined' && process.env?.GITHUB_OWNER) || import.meta.env.GITHUB_OWNER;
+  const repo = (typeof process !== 'undefined' && process.env?.GITHUB_REPO) || import.meta.env.GITHUB_REPO;
   if (!token || !owner || !repo) return null;
   return {
     token,

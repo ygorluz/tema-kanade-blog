@@ -11,9 +11,9 @@ export const prerender = false;
 
 export const GET: APIRoute = async () => {
     try {
-        const token = (import.meta.env.GITHUB_TOKEN ?? '').trim();
-        const owner = (import.meta.env.GITHUB_OWNER ?? '').trim();
-        const repo  = (import.meta.env.GITHUB_REPO ?? '').trim();
+        const token = ((typeof process !== 'undefined' && process.env?.GITHUB_TOKEN) || import.meta.env.GITHUB_TOKEN || '').trim();
+        const owner = ((typeof process !== 'undefined' && process.env?.GITHUB_OWNER) || import.meta.env.GITHUB_OWNER || '').trim();
+        const repo  = ((typeof process !== 'undefined' && process.env?.GITHUB_REPO) || import.meta.env.GITHUB_REPO || '').trim();
 
         if (!token || !owner || !repo) {
             return new Response(JSON.stringify({ state: 'idle' }), {

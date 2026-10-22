@@ -6,6 +6,14 @@
 const COOKIE_NAME = 'admin_session';
 const EXPIRES_MS = 7 * 24 * 60 * 60 * 1000; // 7 dias
 
+export function getAdminSecret(): string {
+    return (
+        (typeof process !== 'undefined' && process.env?.ADMIN_SECRET) ||
+        import.meta.env.ADMIN_SECRET ||
+        ''
+    ).trim();
+}
+
 async function hmac(secret: string, data: string): Promise<string> {
     const enc = new TextEncoder();
     const key = await crypto.subtle.importKey(
@@ -15,11 +23,12 @@ async function hmac(secret: string, data: string): Promise<string> {
     return Array.from(new Uint8Array(sig)).map(b => b.toString(16).padStart(2, '0')).join('');
 }
 
-/** Cria a string de cookie assinada. Retorna null se ADMIN_SECRET não definido. */
+/** Cria a string de cookie assinada. Retorna null se ADMIN_SECRET não definido ou senha incorreta. */
 export async function createSession(password: string): Promise<string | null> {
-    const secret = import.meta.env.ADMIN_SECRET;
+    const secret = getAdminSecret();
     if (!secret) return null;
-    if (password !== secret) return null;
+    const cleanPwd = (password ?? '').trim();
+    if (cleanPwd !== secret && password !== secret) return null;
 
     const expires = Date.now() + EXPIRES_MS;
     const payload = `${expires}`;
@@ -30,7 +39,7 @@ export async function createSession(password: string): Promise<string | null> {
 /** Valida cookie. Retorna true se válido. */
 export async function validateSession(cookieValue: string | undefined): Promise<boolean> {
     if (!cookieValue) return false;
-    const secret = import.meta.env.ADMIN_SECRET;
+    const secret = getAdminSecret();
     if (!secret) return false;
 
     const parts = cookieValue.split('.');
