@@ -12,7 +12,36 @@ const query = ref("");
 const page = ref(1);
 const ready = ref(false);
 const feed = ref<HTMLElement>();
-const pageSize = 5;
+const pageSize = 8;
+
+type PageItem = number | "...";
+
+const visiblePages = computed<PageItem[]>(() => {
+  const total = totalPages.value;
+  const current = page.value;
+
+  if (total <= 7) {
+    return Array.from({ length: total }, (_, i) => i + 1);
+  }
+
+  if (current <= 4) {
+    return [1, 2, 3, 4, 5, "...", total];
+  }
+
+  if (current >= total - 3) {
+    return [1, "...", total - 4, total - 3, total - 2, total - 1, total];
+  }
+
+  return [1, "...", current - 1, current, current + 1, "...", total];
+});
+
+function onEllipsisClick(idx: number) {
+  if (idx < 3) {
+    turnPage(Math.max(1, page.value - 5));
+  } else {
+    turnPage(Math.min(totalPages.value, page.value + 5));
+  }
+}
 
 const categoryNames = computed(() => {
   const cats = [...new Set(props.posts.map(p => p.category).filter(Boolean))];
@@ -51,6 +80,7 @@ function setCategory(value: string) { category.value = value; tag.value = ""; mo
 function reset() { category.value = ""; tag.value = ""; month.value = ""; query.value = ""; page.value = 1; syncUrl(); }
 function search() { page.value = 1; syncUrl(); }
 function turnPage(value: number) {
+  if (value < 1 || value > totalPages.value || value === page.value) return;
   page.value = value; syncUrl();
   feed.value?.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "instant" : "smooth", block: "start" });
 }
@@ -122,13 +152,64 @@ onUnmounted(() => window.removeEventListener("popstate", readUrl));
       </div>
     </div>
 
-    <nav v-if="totalPages > 1" class="pagination" aria-label="Paginação">
-      <button @click="turnPage(page - 1)" :disabled="page === 1" aria-label="Página anterior"><span class="icon-[lucide--chevron-left]"></span></button>
-      <button v-for="index in totalPages" :key="index" @click="turnPage(index)" :class="{ current: page === index }" :aria-current="page === index ? 'page' : undefined" :aria-label="`Página ${index}`">
-        {{ index }}
-      </button>
-      <button @click="turnPage(page + 1)" :disabled="page === totalPages" aria-label="Próxima página"><span class="icon-[lucide--chevron-right]"></span></button>
-      <span>Total: {{ filtered.length }}</span>
+    <nav v-if="totalPages > 1" class="pagination" aria-label="Navegação entre páginas de artigos">
+      <div class="pagination-controls">
+        <button
+          type="button"
+          class="page-btn nav-btn prev"
+          @click="turnPage(page - 1)"
+          :disabled="page === 1"
+          aria-label="Página anterior"
+          title="Página anterior"
+        >
+          <span class="icon-[lucide--chevron-left]" aria-hidden="true"></span>
+          <span class="nav-label">Anterior</span>
+        </button>
+
+        <div class="page-numbers">
+          <template v-for="(item, idx) in visiblePages" :key="idx">
+            <button
+              v-if="item === '...'"
+              type="button"
+              class="page-btn ellipsis"
+              @click="onEllipsisClick(idx)"
+              :title="idx < 3 ? 'Voltar 5 páginas' : 'Avançar 5 páginas'"
+              :aria-label="idx < 3 ? 'Voltar 5 páginas' : 'Avançar 5 páginas'"
+            >
+              &hellip;
+            </button>
+            <button
+              v-else
+              type="button"
+              class="page-btn number"
+              :class="{ current: page === item }"
+              :aria-current="page === item ? 'page' : undefined"
+              :aria-label="`Ir para a página ${item}`"
+              @click="turnPage(item)"
+            >
+              {{ item }}
+            </button>
+          </template>
+        </div>
+
+        <button
+          type="button"
+          class="page-btn nav-btn next"
+          @click="turnPage(page + 1)"
+          :disabled="page === totalPages"
+          aria-label="Próxima página"
+          title="Próxima página"
+        >
+          <span class="nav-label">Próxima</span>
+          <span class="icon-[lucide--chevron-right]" aria-hidden="true"></span>
+        </button>
+      </div>
+
+      <div class="pagination-meta">
+        <span>Página <strong>{{ page }}</strong> de <strong>{{ totalPages }}</strong></span>
+        <span class="meta-dot" aria-hidden="true">•</span>
+        <span>{{ filtered.length }} artigos</span>
+      </div>
     </nav>
 
     <div class="feed-end"><span></span>Histórias bem contadas vivem para sempre.<span></span></div>
@@ -136,13 +217,14 @@ onUnmounted(() => window.removeEventListener("popstate", readUrl));
 </template>
 
 <style scoped>
-.post-feed { scroll-margin-top: 92px; }
+.post-feed { scroll-margin-top: 92px; max-width: 100%; overflow-x: clip; }
 .feed-title { display: flex; justify-content: space-between; align-items: center; margin: 0 1px 16px; height: 26px; }
 .feed-title h2 { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 600; margin: 0; }
 .feed-title h2 > span { color: var(--accent); }
 .feed-title small { font: 9px "Oxanium-Medium", sans-serif; letter-spacing: .12em; margin-left: 5px; color: var(--muted); }
 .feed-count { font-size: 11px; color: var(--muted); }
-.feed-tabs { display: flex; gap: 6px; align-items: center; padding: 9px 10px; margin-bottom: 18px; border-radius: 13px; overflow-x: auto; }
+.feed-tabs { display: flex; gap: 6px; align-items: center; padding: 9px 10px; margin-bottom: 18px; border-radius: 13px; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+.feed-tabs::-webkit-scrollbar { display: none; }
 .feed-tabs button { padding: 7px 13px; color: var(--muted); font-size: 12px; background: transparent; border: 0; border-radius: 8px; white-space: nowrap; }
 .feed-tabs button.selected { color: #fff; background: var(--accent); }
 .feed-tabs button:not(.selected):hover { color: var(--accent); background: var(--accent-soft); }
@@ -173,11 +255,21 @@ onUnmounted(() => window.removeEventListener("popstate", readUrl));
 .empty-state span { font-size: 38px; color: var(--accent); }
 .empty-state h3 { margin: 12px 0 5px; color: var(--text); font-size: 16px; }
 .empty-state p { font-size: 12px; margin-bottom: 18px; }
-.pagination { display: flex; justify-content: center; align-items: center; gap: 7px; margin-top: 28px; font-size: 12px; }
-.pagination button { min-width: 32px; height: 32px; padding: 0 8px; border: 1px solid var(--line); background: var(--card); border-radius: 8px; color: var(--text); }
-.pagination button.current { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; }
-.pagination button:not(.current):hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
-.pagination span { margin-left: 10px; color: var(--muted); font-size: 11px; }
+
+.pagination { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; margin-top: 36px; max-width: 100%; }
+.pagination-controls { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 6px; max-width: 100%; }
+.page-numbers { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 5px; }
+.page-btn { min-width: 36px; height: 36px; padding: 0 8px; border: 1px solid var(--line); background: var(--card); border-radius: 9px; color: var(--text); font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; transition: all .2s cubic-bezier(0.4, 0, 0.2, 1); user-select: none; }
+.page-btn:hover:not(:disabled):not(.current):not(.ellipsis) { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); transform: translateY(-1px); }
+.page-btn.current { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 700; box-shadow: 0 2px 10px #98566a33; }
+.page-btn:disabled { opacity: .35; cursor: not-allowed; transform: none; }
+.page-btn.ellipsis { min-width: 28px; padding: 0; background: transparent; border-color: transparent; color: var(--muted); font-size: 14px; letter-spacing: 2px; }
+.page-btn.ellipsis:hover { background: var(--card); border-color: var(--line); color: var(--accent); }
+.nav-btn { padding: 0 12px; font-weight: 600; }
+.pagination-meta { display: inline-flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; background: var(--card); border: 1px solid var(--line); padding: 4px 14px; border-radius: 20px; }
+.pagination-meta strong { color: var(--text); font-weight: 600; }
+.meta-dot { opacity: .4; }
+
 .feed-end { display: flex; align-items: center; gap: 15px; justify-content: center; margin: 40px 0 10px; color: var(--muted); font-size: 11px; }
 .feed-end span { height: 1px; width: 45px; background: var(--line); }
 .archive-intro { padding: 24px; margin-bottom: 22px; }
@@ -186,8 +278,17 @@ onUnmounted(() => window.removeEventListener("popstate", readUrl));
 .archive-intro p { color: var(--muted); font-size: 12px; margin: 0 0 15px; }
 .archive-search { display: flex; align-items: center; gap: 10px; border: 1px solid var(--line); background: var(--bg); border-radius: 10px; padding: 10px 14px; color: var(--accent); }
 .archive-search input { border: 0; background: transparent; width: 100%; color: var(--text); outline: none; }
+
 @media(max-width:680px) {
   .post-card { grid-template-columns: 1fr; }
   .cover-link { margin: 9px 9px 0; max-height: 160px; }
+  .pagination { margin-top: 24px; gap: 10px; }
+  .pagination-controls { gap: 4px; }
+  .page-numbers { gap: 3px; }
+  .page-btn { min-width: 32px; height: 34px; padding: 0 6px; font-size: 12px; border-radius: 7px; }
+  .page-btn.ellipsis { min-width: 20px; letter-spacing: 1px; }
+  .nav-btn { padding: 0 8px; }
+  .nav-label { display: none; }
+  .pagination-meta { font-size: 11px; padding: 3px 10px; }
 }
 </style>
