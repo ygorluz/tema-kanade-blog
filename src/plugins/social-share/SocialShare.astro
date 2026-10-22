@@ -1,0 +1,186 @@
+---
+/**
+ * SocialShare.astro — Plugin Social Share com SVGs nativos e design responsivo Varsha
+ */
+import { readData } from '../../lib/readData';
+
+interface Props {
+  title?: string;
+  url?: string;
+  context?: 'post-bottom' | 'author-box';
+}
+
+const { title = '', url: propUrl = '', context = 'post-bottom' } = Astro.props;
+
+const pluginsConfig = readData('pluginsConfig.json', {}) as any;
+const shareConfig = pluginsConfig?.socialShare;
+const enabled = shareConfig?.enabled !== false;
+const sectionTitle: string = shareConfig?.sectionTitle || 'Compartilhe este artigo';
+const platforms: string[] = shareConfig?.platforms || [
+  'whatsapp', 'twitter', 'linkedin', 'facebook', 'copy'
+];
+---
+
+{enabled && (
+  <div class="varsha-share-wrap">
+    {sectionTitle && (
+      <span class="varsha-share-title">{sectionTitle}</span>
+    )}
+    <div class="varsha-share-list" data-share-url={propUrl} data-share-title={title}>
+      {platforms.includes('whatsapp') && (
+        <a href="#" class="varsha-share-btn" data-platform="whatsapp" title="WhatsApp" aria-label="Compartilhar no WhatsApp">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+            <path d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.41a8.17 8.17 0 0 1 2.41 5.83c0 4.54-3.7 8.24-8.24 8.24-1.48 0-2.93-.4-4.2-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m4.52 11.66c-.25-.13-1.47-.72-1.7-.81-.23-.08-.39-.13-.56.13-.17.25-.64.81-.79.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.02-1.25-.75-.67-1.26-1.5-1.4-1.75-.15-.25-.02-.39.11-.51.11-.11.25-.29.37-.44.13-.15.17-.25.25-.42.08-.17.04-.32-.02-.44-.06-.13-.56-1.35-.77-1.85-.2-.49-.4-.42-.56-.43h-.48c-.17 0-.44.06-.67.31-.23.25-.88.86-.88 2.1 0 1.24.9 2.44 1.03 2.61.13.17 1.78 2.72 4.31 3.81.6.26 1.07.42 1.44.54.61.19 1.16.17 1.6.1 49-.07 1.47-.6 1.68-1.18.21-.58.21-1.07.15-1.18-.06-.11-.22-.17-.47-.3" />
+          </svg>
+          <span>WhatsApp</span>
+        </a>
+      )}
+
+      {platforms.includes('twitter') && (
+        <a href="#" class="varsha-share-btn" data-platform="twitter" title="X (Twitter)" aria-label="Compartilhar no X">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+          <span>X / Twitter</span>
+        </a>
+      )}
+
+      {platforms.includes('linkedin') && (
+        <a href="#" class="varsha-share-btn" data-platform="linkedin" title="LinkedIn" aria-label="Compartilhar no LinkedIn">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+            <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.46 8.76a1.64 1.64 0 1 0 0-3.28 1.64 1.64 0 0 0 0 3.28M7.86 18.5V10.1H5.06v8.4h2.8z" />
+          </svg>
+          <span>LinkedIn</span>
+        </a>
+      )}
+
+      {platforms.includes('facebook') && (
+        <a href="#" class="varsha-share-btn" data-platform="facebook" title="Facebook" aria-label="Compartilhar no Facebook">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="currentColor" aria-hidden="true">
+            <path d="M12 2.04C6.5 2.04 2 6.53 2 12.06C2 17.06 5.66 21.21 10.44 21.96V14.96H7.9V12.06H10.44V9.85C10.44 7.34 11.93 5.96 14.22 5.96C15.31 5.96 16.45 6.15 16.45 6.15V8.62H15.19C13.95 8.62 13.56 9.39 13.56 10.18V12.06H16.34L15.89 14.96H13.56V21.96A10 10 0 0 0 22 12.06C22 6.53 17.5 2.04 12 2.04Z" />
+          </svg>
+          <span>Facebook</span>
+        </a>
+      )}
+
+      {platforms.includes('copy') && (
+        <a href="#" class="varsha-share-btn" data-platform="copy" title="Copiar Link" aria-label="Copiar link do artigo">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+          </svg>
+          <span class="copy-label">Copiar Link</span>
+        </a>
+      )}
+    </div>
+  </div>
+)}
+
+<style>
+  .varsha-share-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .varsha-share-title {
+    font-size: 0.78rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+
+  .varsha-share-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .varsha-share-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: var(--radius-md, 6px);
+    background: var(--bg-elevated);
+    border: 1px solid var(--line);
+    color: var(--ink);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
+  }
+
+  .varsha-share-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .varsha-share-btn svg {
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 600px) {
+    .varsha-share-wrap {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+</style>
+
+<script>
+(function() {
+  function initShareButtons() {
+    var wraps = document.querySelectorAll('.varsha-share-list');
+    wraps.forEach(function(wrap) {
+      var currentUrl = encodeURIComponent(wrap.getAttribute('data-share-url') || window.location.href);
+      var currentTitle = encodeURIComponent(wrap.getAttribute('data-share-title') || document.title);
+
+      var btns = wrap.querySelectorAll('.varsha-share-btn');
+      btns.forEach(function(btn) {
+        var platform = btn.getAttribute('data-platform');
+        if (!platform) return;
+
+        var urls: Record<string, string> = {
+          whatsapp: 'https://wa.me/?text=' + currentTitle + '%20' + currentUrl,
+          twitter:  'https://twitter.com/intent/tweet?url=' + currentUrl + '&text=' + currentTitle,
+          linkedin: 'https://www.linkedin.com/sharing/share-offsite/?url=' + currentUrl,
+          facebook: 'https://www.facebook.com/sharer/sharer.php?u=' + currentUrl,
+          copy:     'copy',
+        };
+
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          var target = urls[platform];
+          if (target === 'copy') {
+            var rawUrl = wrap.getAttribute('data-share-url') || window.location.href;
+            navigator.clipboard?.writeText(rawUrl).then(function() {
+              var label = btn.querySelector('.copy-label');
+              if (label) {
+                var prev = label.textContent;
+                label.textContent = 'Copiado!';
+                setTimeout(function() { label.textContent = prev; }, 2000);
+              }
+            });
+          } else if (target) {
+            window.open(target, '_blank', 'noopener,width=600,height=450');
+          }
+        });
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initShareButtons);
+  } else {
+    initShareButtons();
+  }
+})();
+</script>
