@@ -17,19 +17,19 @@ function formatMonth(ym: string) {
 ---
 <aside class="right-sidebar" aria-label="Atualizações e destaques">
   <section class="card panel notice-card">
-    <h2 class="panel-title"><span class="icon-[lucide--megaphone]" aria-hidden="true"></span>Sobre o Blog<span class="notice-dot"></span></h2>
-    <p>Olá! Que alegria ter você aqui <span class="accent">✿</span></p>
-    <p>Um cantinho com artigos sobre tecnologia, design, hábitos produtivos e reflexões para o seu dia a dia.</p>
-    <a href={withBase("/sobre/")} class="text-link">Conheça nossa história<span class="icon-[lucide--arrow-right]" aria-hidden="true"></span></a>
+    <h2 class="panel-title"><span class="icon-[lucide--graduation-cap]" aria-hidden="true"></span>Portal Sabixão<span class="notice-dot"></span></h2>
+    <p>Seja bem-vindo aos seus estudos! <span class="accent">✿</span></p>
+    <p>Aulas didáticas, resumos completos e dicas práticas para ajudar você a conquistar seus objetivos escolares e profissionais.</p>
+    <a href={withBase("/sobre/")} class="text-link">Conheça nossa metodologia<span class="icon-[lucide--arrow-right]" aria-hidden="true"></span></a>
   </section>
 
   <section class="card panel recent-panel">
-    <h2 class="panel-title"><span class="icon-[lucide--clock-3]" aria-hidden="true"></span>Mais Recentes</h2>
+    <h2 class="panel-title"><span class="icon-[lucide--clock-3]" aria-hidden="true"></span>Aulas Recentes</h2>
     <ol>
       {posts.slice(0, 4).map((post, index) => (
         <li>
           <span class="recent-number">{String(index + 1).padStart(2, "0")}</span>
-          <a href={withBase(`/posts/${post.id}/`)}>
+          <a href={withBase(post.url || `/${post.id}/`)}>
             <h3>{post.title}</h3>
             <time datetime={post.date}>{post.date.replaceAll("-", ".")}</time>
           </a>
@@ -39,26 +39,26 @@ function formatMonth(ym: string) {
   </section>
 
   <section class="card panel archive-panel">
-    <h2 class="panel-title"><span class="icon-[lucide--calendar-days]" aria-hidden="true"></span>Arquivo Mensal</h2>
+    <h2 class="panel-title"><span class="icon-[lucide--calendar-days]" aria-hidden="true"></span>Arquivo de Conteúdo</h2>
     {months.map(month => (
       <a href={withBase(`/posts/?month=${month}`)}>
         <span>{formatMonth(month)}</span>
-        <span>{posts.filter(p => p.date.startsWith(month)).length} post(s)</span>
+        <span>{posts.filter(p => p.date.startsWith(month)).length} aula(s)</span>
       </a>
     ))}
   </section>
 
   <section class="card quote-card">
     <span class="quote-mark">“</span>
-    <p>A consistência transforma pequenas linhas em grandes histórias.</p>
-    <span class="quote-source">LEMBRETE DO DIA</span>
+    <p>O conhecimento transforma caminhos: cada pequena aula estudada hoje constrói o seu futuro de amanhã.</p>
+    <span class="quote-source">INSPIRAÇÃO DO DIA</span>
     <span class="quote-flower" aria-hidden="true">✿</span>
   </section>
 
   <section class="site-notes">
-    <span class="icon-[lucide--sprout]" aria-hidden="true"></span>
-    <p>Publicando com carinho e dedicação</p>
-    <span>Artigos · Ideias · Inspiração</span>
+    <span class="icon-[lucide--graduation-cap]" aria-hidden="true"></span>
+    <p>Educação acessível para todo o Brasil</p>
+    <span>Aulas · Resumos · Vestibulares</span>
   </section>
 </aside>
 

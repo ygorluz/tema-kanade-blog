@@ -1,23 +1,24 @@
 {
-  "name": "Kanade Blog",
-  "description": "Um blog moderno, acolhedor e minimalista para compartilhar artigos, reflexões e boas ideias.",
-  "url": "https://kanade-blog.vercel.app",
-  "author": "Redação",
+  "name": "Sabixão",
+  "description": "Portal educacional com aulas didáticas, resumos objetivos, dicas de estudo e conteúdos completos para acelerar seu aprendizado.",
+  "url": "https://sabixao.vercel.app",
+  "author": "Equipe Sabixão",
   "language": "pt-BR",
   "logo": "",
   "theme": {
-    "primary": "#d85d7e",
-    "accent": "#d85d7e",
+    "primary": "#3b82f6",
+    "accent": "#3b82f6",
     "mode": "light"
   },
   "social": {
-    "instagram": "https://instagram.com",
-    "twitter": "https://twitter.com",
-    "github": "https://github.com",
+    "instagram": "https://instagram.com/sabixao",
+    "twitter": "https://twitter.com/sabixao",
+    "github": "https://github.com/ygorluz/sabixao",
     "rss": "/rss.xml"
   },
   "contact": {
-    "email": "contato@exemplo.com",
-    "name": "Equipe Editorial"
-  }
+    "email": "contato@sabixao.com.br",
+    "name": "Equipe Pedagógica Sabixão"
+  },
+  "postUrlPrefix": ""
 }

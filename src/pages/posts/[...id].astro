@@ -5,8 +5,16 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import PersonalCard from "../../components/home/PersonalCard.vue";
 import PostCover from "../../components/posts/PostCover.vue";
 import { getPosts, summarize } from "../../lib/posts";
+import { postUrl } from "../../lib/postUrl";
+import { readData } from "../../lib/readData";
 
 export async function getStaticPaths() {
+  const siteConfig = readData<any>("siteConfig.json", {});
+  const rawPrefix = siteConfig?.postUrlPrefix;
+  // Só gera em /posts/:id se o prefixo configurado for explicitamente 'posts'
+  if (rawPrefix !== "posts") {
+    return [];
+  }
   const allPosts = await getPosts();
   return allPosts.map(post => ({ params: { id: post.id }, props: { post } }));
 }
@@ -19,14 +27,14 @@ const index = allSummaries.findIndex(item => item.id === post.id);
 const newer = allSummaries[index - 1];
 const older = allSummaries[index + 1];
 
-const authorName = post.data.author || "Redação";
+const authorName = post.data.author || "Equipe Sabixão";
 const coverImg = post.data.heroImage || post.data.image || post.data.coverImage || "";
 ---
-<BaseLayout title={post.data.title} description={post.data.description} heroTitle="Leitura & Reflexão" heroSubtitle="Cada linha escrita com carinho tem sua própria luz." article>
+<BaseLayout title={post.data.title} description={post.data.description} heroTitle="Aulas & Conteúdos Didáticos" heroSubtitle="Aprenda no seu ritmo com explicações claras e didáticas." article>
   <div class="reading-progress" id="reading-progress" aria-hidden="true"></div>
   <div class="shell article-layout">
     <article class="card article-detail">
-      <a href={withBase("/posts/")} class="text-link"><span class="icon-[lucide--arrow-left]" aria-hidden="true"></span>Voltar para todos os artigos</a>
+      <a href={withBase("/posts/")} class="text-link"><span class="icon-[lucide--arrow-left]" aria-hidden="true"></span>Voltar para as aulas e artigos</a>
       <header class="article-header">
         <a class="chip" href={withBase(`/posts/?category=${encodeURIComponent(post.data.category)}`)}>{post.data.category}</a>
         <h1>{post.data.title}</h1>
@@ -45,14 +53,14 @@ const coverImg = post.data.heroImage || post.data.image || post.data.coverImage 
       </div>
       {headings.length > 0 && (
         <details class="mobile-toc">
-          <summary>Sumário do Artigo</summary>
+          <summary>Sumário da Aula</summary>
           <ol>{headings.filter(h => h.depth <= 3).map(h => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol>
         </details>
       )}
       <div class="prose" id="article-body"><Content /></div>
       <div class="article-ending">
         <span>✿</span>
-        <p>Obrigado por ler até aqui. Esperamos que este artigo tenha inspirado seu dia!</p>
+        <p>Obrigado por acompanhar esta aula no Sabixão. Bons estudos e continue praticando!</p>
       </div>
       <div class="article-tools">
         <div class="article-tags">
@@ -69,8 +77,8 @@ const coverImg = post.data.heroImage || post.data.image || post.data.coverImage 
         </div>
       </div>
       <nav class="adjacent-posts" aria-label="Navegação entre artigos">
-        {newer ? <a href={withBase(`/posts/${newer.id}/`)}><span>← Artigo anterior</span><strong>{newer.title}</strong></a> : <div></div>}
-        {older && <a href={withBase(`/posts/${older.id}/`)}><span>Próximo artigo →</span><strong>{older.title}</strong></a>}
+        {newer ? <a href={withBase(postUrl(newer.id))}><span>← Artigo anterior</span><strong>{newer.title}</strong></a> : <div></div>}
+        {older && <a href={withBase(postUrl(older.id))}><span>Próximo artigo →</span><strong>{older.title}</strong></a>}
       </nav>
     </article>
     <aside class="article-sidebar">

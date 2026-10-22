@@ -36,6 +36,22 @@ export const onRequest = defineMiddleware(async (context, next) => {
                 return context.redirect(r.to, r.type || 301);
             }
         }
+
+        // Se postUrlPrefix for vazio (URL limpa), redireciona /posts/:slug, /post/:slug e /blog/:slug para /:slug/
+        let siteCfg: any = {};
+        try {
+            siteCfg = JSON.parse(readFileSync(resolve(process.cwd(), 'src/data/siteConfig.json'), 'utf-8'));
+        } catch {}
+        const isClean = siteCfg?.postUrlPrefix === '' || siteCfg?.postUrlPrefix === null || siteCfg?.postUrlPrefix === undefined;
+        if (isClean) {
+            const match = pathname.match(/^\/(?:posts|post|blog)\/([^/]+)\/?$/);
+            if (match && match[1]) {
+                const slug = match[1];
+                if (!['page', 'category', 'tag'].includes(slug)) {
+                    return context.redirect(`/${slug}/`, 301);
+                }
+            }
+        }
     }
 
     // Rotas públicas: pass through

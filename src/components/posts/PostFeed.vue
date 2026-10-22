@@ -45,7 +45,7 @@ function onEllipsisClick(idx: number) {
 
 const categoryNames = computed(() => {
   const cats = [...new Set(props.posts.map(p => p.category).filter(Boolean))];
-  return cats.length ? cats : ["Tecnologia", "Criatividade", "Design", "Produtividade"];
+  return cats.length ? cats : ["Aulas & Cursos", "Dicas de Estudo", "Matemática & Raciocínio", "Português & Redação", "Ciências da Natureza", "ENEM & Concursos"];
 });
 
 const filtered = computed(() => props.posts.filter(p =>
@@ -92,22 +92,22 @@ onUnmounted(() => window.removeEventListener("popstate", readUrl));
 <template>
   <section ref="feed" class="post-feed" :data-ready="ready">
     <div v-if="archive" class="card archive-intro">
-      <span class="eyebrow">ARQUIVO GERAL</span>
-      <h2>Todas as Publicações</h2>
-      <p>Um total de {{ posts.length }} artigos publicados com dedicação.</p>
+      <span class="eyebrow">ARQUIVO DE AULAS</span>
+      <h2>Todas as Aulas & Publicações</h2>
+      <p>Um total de {{ posts.length }} conteúdos educativos preparados para você.</p>
       <label class="archive-search">
         <span class="icon-[lucide--search]"></span>
-        <input v-model="query" @input="search" type="search" aria-label="Filtrar artigos" placeholder="Pesquisar nos artigos…" />
+        <input v-model="query" @input="search" type="search" aria-label="Filtrar aulas" placeholder="Pesquisar por matéria, aula ou tópico…" />
       </label>
     </div>
     <div v-else class="feed-title">
-      <h2><span class="icon-[lucide--notebook-pen]"></span>Últimos Artigos<small>LATEST POSTS</small></h2>
-      <span class="feed-count">{{ posts.length }} artigos</span>
+      <h2><span class="icon-[lucide--graduation-cap]"></span>Últimas Aulas & Dicas<small>AULAS & RESUMOS</small></h2>
+      <span class="feed-count">{{ posts.length }} publicações</span>
     </div>
 
-    <div class="feed-tabs card" aria-label="Categorias de artigos">
+    <div class="feed-tabs card" aria-label="Disciplinas e categorias">
       <button :class="{ selected: !category && !tag && !month }" :aria-pressed="!category && !tag && !month" @click="reset">
-        Todos os artigos <span>{{ posts.length }}</span>
+        Todas as aulas <span>{{ posts.length }}</span>
       </button>
       <button v-for="name in categoryNames" :key="name" :class="{ selected: category === name }" :aria-pressed="category === name" @click="setCategory(name)">
         {{ name }}
@@ -121,7 +121,7 @@ onUnmounted(() => window.removeEventListener("popstate", readUrl));
 
     <div class="post-list" aria-live="polite">
       <article v-for="post in displayed" :key="post.id" class="post-card card" :data-category="post.category">
-        <a :href="withBase(`/posts/${post.id}/`)" class="cover-link" :aria-label="`Ler: ${post.title}`" tabindex="-1">
+        <a :href="withBase(post.url || `/${post.id}/`)" class="cover-link" :aria-label="`Ler: ${post.title}`" tabindex="-1">
           <PostCover :kind="post.cover" :featured="post.featured" :hero-image="post.heroImage" :title="post.title" />
         </a>
         <div class="post-info">
@@ -131,13 +131,13 @@ onUnmounted(() => window.removeEventListener("popstate", readUrl));
             <span class="meta-divider">/</span>
             <time :datetime="post.date">{{ post.date.replaceAll("-", ".") }}</time>
           </div>
-          <h3><a :href="withBase(`/posts/${post.id}/`)">{{ post.title }}</a></h3>
+          <h3><a :href="withBase(post.url || `/${post.id}/`)">{{ post.title }}</a></h3>
           <p class="post-description">{{ post.description }}</p>
           <div class="post-bottom">
             <div class="post-tags">
               <a v-for="item in post.tags.slice(0, 3)" :key="item" :href="withBase(`/posts/?tag=${encodeURIComponent(item)}`)"># {{ item }}</a>
             </div>
-            <a class="read-post" :href="withBase(`/posts/${post.id}/`)" :aria-label="`Ler artigo completo: ${post.title}`">
+            <a class="read-post" :href="withBase(post.url || `/${post.id}/`)" :aria-label="`Ler artigo completo: ${post.title}`">
               {{ post.minutes }} min de leitura<span class="icon-[lucide--arrow-up-right]"></span>
             </a>
           </div>
@@ -145,14 +145,14 @@ onUnmounted(() => window.removeEventListener("popstate", readUrl));
       </article>
 
       <div v-if="!displayed.length" class="empty-state card">
-        <span class="icon-[lucide--notebook]"></span>
-        <h3>Nenhum artigo encontrado</h3>
-        <p>Não encontramos publicações correspondentes. Tente buscar com outros termos.</p>
-        <button class="btn secondary" @click="reset">Ver todos os artigos</button>
+        <span class="icon-[lucide--book-open]"></span>
+        <h3>Nenhuma aula encontrada</h3>
+        <p>Não encontramos conteúdos correspondentes. Tente buscar por outros termos ou matérias.</p>
+        <button class="btn secondary" @click="reset">Ver todas as aulas</button>
       </div>
     </div>
 
-    <nav v-if="totalPages > 1" class="pagination" aria-label="Navegação entre páginas de artigos">
+    <nav v-if="totalPages > 1" class="pagination" aria-label="Navegação entre páginas de aulas">
       <div class="pagination-controls">
         <button
           type="button"
@@ -208,11 +208,11 @@ onUnmounted(() => window.removeEventListener("popstate", readUrl));
       <div class="pagination-meta">
         <span>Página <strong>{{ page }}</strong> de <strong>{{ totalPages }}</strong></span>
         <span class="meta-dot" aria-hidden="true">•</span>
-        <span>{{ filtered.length }} artigos</span>
+        <span>{{ filtered.length }} aulas</span>
       </div>
     </nav>
 
-    <div class="feed-end"><span></span>Histórias bem contadas vivem para sempre.<span></span></div>
+    <div class="feed-end"><span></span>O conhecimento transforma o seu futuro.<span></span></div>
   </section>
 </template>
 

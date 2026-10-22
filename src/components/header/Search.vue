@@ -46,19 +46,19 @@ onUnmounted(() => {
   <dialog ref="dialog" class="search-dialog" aria-labelledby="search-title" @close="afterClose" @click="e => { if(e.target === dialog) close(); }">
     <div class="search-body">
       <div class="search-heading">
-        <h2 id="search-title">Buscar no Blog</h2>
+        <h2 id="search-title">Buscar no Sabixão</h2>
         <button aria-label="Fechar busca" @click="close"><span class="icon-[lucide--x]"></span></button>
       </div>
       <div class="search-field">
         <span class="icon-[lucide--search]"></span>
-        <input ref="input" v-model="query" type="search" placeholder="Buscar por título, categoria ou tag…" aria-label="Termo de busca" />
+        <input ref="input" v-model="query" type="search" placeholder="Buscar por aulas, resumos, disciplinas ou tópicos…" aria-label="Termo de busca" />
         <kbd>ESC</kbd>
       </div>
       <p class="search-meta" aria-live="polite">
-        {{ query.trim() ? `Encontrado(s) ${results.length} artigo(s)` : "Publicações Recentes" }}
+        {{ query.trim() ? `Encontrada(s) ${results.length} aula(s)` : "Aulas & Conteúdos Recentes" }}
       </p>
       <div class="search-results">
-        <a v-for="post in results" :key="post.id" :href="withBase(`/posts/${post.id}/`)" class="search-result" @click="close">
+        <a v-for="post in results" :key="post.id" :href="withBase(post.url || `/${post.id}/`)" class="search-result" @click="close">
           <span class="result-icon icon-[lucide--file-text]"></span>
           <div>
             <strong>{{ post.title }}</strong>
@@ -68,8 +68,8 @@ onUnmounted(() => {
         </a>
         <div v-if="!results.length" class="empty-state">
           <span class="icon-[lucide--search-x]"></span>
-          <h3>Nenhum resultado encontrado</h3>
-          <p>Tente buscar por termos mais genéricos como "tecnologia", "dicas" ou "design".</p>
+          <h3>Nenhuma aula encontrada</h3>
+          <p>Tente buscar por termos como "matemática", "redação", "dicas de estudo" ou "vestibular".</p>
         </div>
       </div>
       <div class="search-footer">

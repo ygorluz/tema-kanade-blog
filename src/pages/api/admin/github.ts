@@ -55,9 +55,15 @@ async function syncBlogPrefixRedirect(siteConfigContent: string, repo: string, h
             }
         } catch {}
         const redirects = Array.isArray(vercelConfig.redirects) ? vercelConfig.redirects : [];
-        const filtered = redirects.filter((r: any) => !(r?.source === '/blog/:slug*' && r?.destination === '/:slug*'));
+        const isPrefixRedirect = (r: any) =>
+            ['/posts/:slug', '/post/:slug', '/blog/:slug', '/blog/:slug*'].includes(r?.source);
+        const filtered = redirects.filter((r: any) => !isPrefixRedirect(r));
         if (useCleanUrls) {
-            filtered.push({ source: '/blog/:slug*', destination: '/:slug*', permanent: true });
+            filtered.push(
+                { source: '/posts/:slug', destination: '/:slug', permanent: true },
+                { source: '/post/:slug', destination: '/:slug', permanent: true },
+                { source: '/blog/:slug', destination: '/:slug', permanent: true }
+            );
         }
         // Se nao mudou, nao escreve
         if (JSON.stringify(filtered) === JSON.stringify(redirects)) return;

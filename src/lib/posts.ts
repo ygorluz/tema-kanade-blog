@@ -1,7 +1,9 @@
 import { getCollection, type CollectionEntry } from "astro:content";
+import { postUrl } from "./postUrl";
 
 export type PostSummary = {
   id: string;
+  url: string;
   title: string;
   description: string;
   date: string;
@@ -33,6 +35,7 @@ export function summarize(post: CollectionEntry<"posts">): PostSummary {
 
   return {
     id: post.id,
+    url: postUrl(post.id),
     title: post.data.title,
     description: post.data.description || "",
     date: dateStr,
