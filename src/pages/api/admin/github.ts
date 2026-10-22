@@ -61,8 +61,11 @@ async function syncBlogPrefixRedirect(siteConfigContent: string, repo: string, h
         if (useCleanUrls) {
             filtered.push(
                 { source: '/posts/:slug', destination: '/:slug', permanent: true },
+                { source: '/posts/:slug/', destination: '/:slug/', permanent: true },
                 { source: '/post/:slug', destination: '/:slug', permanent: true },
-                { source: '/blog/:slug', destination: '/:slug', permanent: true }
+                { source: '/post/:slug/', destination: '/:slug/', permanent: true },
+                { source: '/blog/:slug', destination: '/:slug', permanent: true },
+                { source: '/blog/:slug/', destination: '/:slug/', permanent: true }
             );
         }
         // Se nao mudou, nao escreve
