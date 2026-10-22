@@ -7,7 +7,9 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "predev": "node scripts/sanitize-posts.mjs",
+    "prebuild": "node scripts/sanitize-posts.mjs"
   },
   "dependencies": {
     "@astrojs/vue": "^7.0.3",
@@ -28,5 +30,9 @@
   },
   "engines": {
     "node": ">=22.12.0"
+  },
+  "optionalDependencies": {
+    "@rolldown/binding-linux-arm64-gnu": "^1.2.15",
+    "@rolldown/binding-linux-x64-gnu": "^1.2.15"
   }
 }
