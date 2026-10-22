@@ -1,0 +1,22 @@
+---
+import { withBase } from "../lib/urls";
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+<BaseLayout title="Página Não Encontrada" heroTitle="Ops! Página não encontrada" heroSubtitle="Tudo bem se perder às vezes. Vamos te levar de volta ao caminho certo.">
+  <div class="shell missing-page">
+    <div class="card page-card">
+      <span class="missing-number">404</span>
+      <h2>Esta página ainda não foi escrita</h2>
+      <p>O link que você tentou acessar pode ter sido movido, renomeado ou não existe mais.</p>
+      <a href={withBase("/")} class="btn">Voltar para o Início</a>
+      <a href={withBase("/posts/")} class="btn secondary">Ver Todos os Artigos</a>
+    </div>
+  </div>
+</BaseLayout>
+<style>
+.missing-page { padding-top: 25px; padding-bottom: 50px; max-width: 720px; text-align: center; }
+.missing-number { font: 85px "Oxanium-Medium"; color: var(--accent); display: block; }
+.missing-page h2 { font-size: 23px; margin: 8px; }
+.missing-page p { color: var(--muted); font-size: 13px; margin: 15px 0 25px; }
+.missing-page .btn { margin: 5px; font-size: 13px; }
+</style>

@@ -1,0 +1,15 @@
+[
+  {
+    "id": "redacao",
+    "name": "Redação",
+    "role": "Equipe Editorial",
+    "avatar": "/images/avatar.svg",
+    "bio": "Compartilhando artigos, reflexões sobre tecnologia e ideias para inspirar o seu dia a dia.",
+    "social": {
+      "twitter": "https://twitter.com",
+      "instagram": "https://instagram.com",
+      "github": "https://github.com",
+      "website": ""
+    }
+  }
+]

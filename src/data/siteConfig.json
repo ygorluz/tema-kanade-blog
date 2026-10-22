@@ -1,0 +1,23 @@
+{
+  "name": "Kanade Blog",
+  "description": "Um blog moderno, acolhedor e minimalista para compartilhar artigos, reflexões e boas ideias.",
+  "url": "https://kanade-blog.vercel.app",
+  "author": "Redação",
+  "language": "pt-BR",
+  "logo": "",
+  "theme": {
+    "primary": "#d85d7e",
+    "accent": "#d85d7e",
+    "mode": "light"
+  },
+  "social": {
+    "instagram": "https://instagram.com",
+    "twitter": "https://twitter.com",
+    "github": "https://github.com",
+    "rss": "/rss.xml"
+  },
+  "contact": {
+    "email": "contato@exemplo.com",
+    "name": "Equipe Editorial"
+  }
+}

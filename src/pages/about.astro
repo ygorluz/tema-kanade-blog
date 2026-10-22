@@ -1,0 +1,74 @@
+---
+import { withBase } from "../lib/urls";
+import BlogLayout from "../layouts/BlogLayout.astro";
+import sobreData from "../data/sobre.json";
+import siteCfg from "../data/siteConfig.json";
+
+const authorName = sobreData.authorName || siteCfg.author || "Redação";
+const authorRole = sobreData.authorRole || "Criador de Conteúdo";
+const heroTitle = sobreData.heroTitle || "Olá! Seja muito bem-vindo ao nosso espaço.";
+const heroSubtitle = sobreData.heroSubtitle || "Um cantinho na web dedicado a ideias, aprendizados e boas leituras.";
+---
+<BlogLayout title="Sobre" heroTitle={heroTitle} heroSubtitle={heroSubtitle}>
+  <section class="card page-card about-card">
+    <div class="about-intro">
+      <img src={withBase(sobreData.avatar || "/images/avatar.svg")} width="90" height="90" alt={authorName} />
+      <div>
+        <span class="eyebrow">EQUIPE EDITORIAL</span>
+        <h2>Muito prazer em te conhecer <span class="accent">✿</span></h2>
+        <p>{authorRole} · Ideias & Tecnologia · Compartilhando conhecimento</p>
+      </div>
+    </div>
+    <div class="prose">
+      <h2>Sobre o Blog</h2>
+      {(sobreData.aboutText || []).map((paragraph: string) => (
+        <p>{paragraph}</p>
+      ))}
+      <blockquote>
+        <p>A internet fica muito melhor quando construímos lugares acolhedores, rápidos e com conteúdos que realmente agregam valor.</p>
+      </blockquote>
+      <h2>Temas que Abordamos</h2>
+    </div>
+    <div class="interest-grid">
+      {(sobreData.interests || []).map((item: any) => (
+        <div>
+          <span class={item.icon || "icon-[lucide--code-xml]"} aria-hidden="true"></span>
+          <strong>{item.title}</strong>
+          <p>{item.text}</p>
+        </div>
+      ))}
+    </div>
+    <div class="about-links">
+      <a class="btn" href={siteCfg.social?.github || "https://github.com"} target="_blank" rel="noopener noreferrer">
+        <span class="icon-[jam--github]" aria-hidden="true"></span>GitHub
+      </a>
+      <a class="btn secondary" href={withBase("/posts/")}>
+        Ler Nossos Artigos<span class="icon-[lucide--arrow-right]" aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="about-end">
+      Obrigado por nos visitar e fazer parte desta jornada.<span>✿</span>
+    </div>
+  </section>
+</BlogLayout>
+<style>
+.about-card { padding: 35px; }
+.about-intro { display: flex; align-items: center; gap: 22px; }
+.about-intro img { border-radius: 26px; transform: rotate(-4deg); box-shadow: 5px 5px 0 var(--accent-soft); }
+.about-intro .eyebrow { font-size: 9px; letter-spacing: .15em; color: var(--accent); }
+.about-intro h2 { font-size: 23px; margin: 7px 0; }
+.about-intro p { color: var(--muted); font-size: 11px; margin: 0; }
+.interest-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin: 20px 0; }
+.interest-grid > div { border-radius: 12px; background: var(--accent-soft); padding: 20px; }
+.interest-grid span { color: var(--accent); font-size: 25px; display: block; margin-bottom: 13px; }
+.interest-grid strong { font-size: 14px; font-weight: 500; display: block; margin-bottom: 6px; }
+.interest-grid p { font-size: 11px; line-height: 1.8; color: var(--muted); margin-bottom: 0; }
+.about-links { display: flex; flex-wrap: wrap; gap: 12px; margin: 25px 0; font-size: 12px; }
+.about-end { text-align: center; border-top: 1px dashed var(--line); margin-top: 32px; padding-top: 25px; color: var(--muted); font-size: 12px; }
+.about-end span { display: block; font-size: 22px; color: var(--accent); margin-top: 10px; }
+@media(max-width:580px) {
+  .about-card { padding: 22px; }
+  .about-intro { flex-direction: column; text-align: center; }
+  .interest-grid { grid-template-columns: 1fr; }
+}
+</style>

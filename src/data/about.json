@@ -1,0 +1,26 @@
+{
+  "title": "Sobre o Blog",
+  "heroTitle": "Olá! Seja muito bem-vindo ao nosso espaço.",
+  "heroSubtitle": "Um cantinho na web dedicado a ideias, aprendizados e boas leituras.",
+  "authorName": "Redação",
+  "authorRole": "Criador de Conteúdo",
+  "authorBio": "Apaixonados por tecnologia, escrita e design. Criando artigos pensados para inspirar e simplificar sua jornada digital.",
+  "avatar": "/images/avatar.svg",
+  "aboutText": [
+    "Acreditamos que a internet fica muito mais interessante quando construímos lugares acolhedores, rápidos e com conteúdos que realmente agregam valor ao dia a dia de quem lê.",
+    "Aqui você encontrará artigos práticos sobre tecnologia, reflexões sobre processos criativos, dicas de produtividade saudável e pequenos detalhes do cotidiano.",
+    "Nosso objetivo é compartilhar conhecimento de forma simples, direta e humana, sem complicações técnicas desnecessárias."
+  ],
+  "interests": [
+    {
+      "icon": "icon-[lucide--code-xml]",
+      "title": "Tecnologia & Web",
+      "text": "Astro, Vue, TypeScript e ferramentas modernas para criar experiências digitais incríveis."
+    },
+    {
+      "icon": "icon-[lucide--coffee]",
+      "title": "Inspiração & Vida",
+      "text": "Leituras, reflexões e momentos de tranquilidade para recarregar as energias e manter a curiosidade ativa."
+    }
+  ]
+}

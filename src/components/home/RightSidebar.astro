@@ -1,0 +1,89 @@
+---
+import { withBase } from "../../lib/urls";
+import type { PostSummary } from "../../lib/posts";
+interface Props { posts: PostSummary[] }
+const { posts } = Astro.props;
+const months = [...new Set(posts.map(p => p.date.slice(0, 7)))];
+
+function formatMonth(ym: string) {
+  const [year, month] = ym.split("-");
+  const monthNames: Record<string, string> = {
+    "01": "Janeiro", "02": "Fevereiro", "03": "Março", "04": "Abril",
+    "05": "Maio", "06": "Junho", "07": "Julho", "08": "Agosto",
+    "09": "Setembro", "10": "Outubro", "11": "Novembro", "12": "Dezembro"
+  };
+  return `${monthNames[month] || month} de ${year}`;
+}
+---
+<aside class="right-sidebar" aria-label="Atualizações e destaques">
+  <section class="card panel notice-card">
+    <h2 class="panel-title"><span class="icon-[lucide--megaphone]" aria-hidden="true"></span>Sobre o Blog<span class="notice-dot"></span></h2>
+    <p>Olá! Que alegria ter você aqui <span class="accent">✿</span></p>
+    <p>Um cantinho com artigos sobre tecnologia, design, hábitos produtivos e reflexões para o seu dia a dia.</p>
+    <a href={withBase("/sobre/")} class="text-link">Conheça nossa história<span class="icon-[lucide--arrow-right]" aria-hidden="true"></span></a>
+  </section>
+
+  <section class="card panel recent-panel">
+    <h2 class="panel-title"><span class="icon-[lucide--clock-3]" aria-hidden="true"></span>Mais Recentes</h2>
+    <ol>
+      {posts.slice(0, 4).map((post, index) => (
+        <li>
+          <span class="recent-number">{String(index + 1).padStart(2, "0")}</span>
+          <a href={withBase(`/posts/${post.id}/`)}>
+            <h3>{post.title}</h3>
+            <time datetime={post.date}>{post.date.replaceAll("-", ".")}</time>
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+
+  <section class="card panel archive-panel">
+    <h2 class="panel-title"><span class="icon-[lucide--calendar-days]" aria-hidden="true"></span>Arquivo Mensal</h2>
+    {months.map(month => (
+      <a href={withBase(`/posts/?month=${month}`)}>
+        <span>{formatMonth(month)}</span>
+        <span>{posts.filter(p => p.date.startsWith(month)).length} post(s)</span>
+      </a>
+    ))}
+  </section>
+
+  <section class="card quote-card">
+    <span class="quote-mark">“</span>
+    <p>A consistência transforma pequenas linhas em grandes histórias.</p>
+    <span class="quote-source">LEMBRETE DO DIA</span>
+    <span class="quote-flower" aria-hidden="true">✿</span>
+  </section>
+
+  <section class="site-notes">
+    <span class="icon-[lucide--sprout]" aria-hidden="true"></span>
+    <p>Publicando com carinho e dedicação</p>
+    <span>Artigos · Ideias · Inspiração</span>
+  </section>
+</aside>
+
+<style>
+.notice-card { background: linear-gradient(135deg, var(--card), var(--accent-soft)); }
+.notice-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent); margin-left: auto; }
+.notice-card p { font-size: 11px; line-height: 2; color: var(--muted); margin: 8px 0 11px; }
+.notice-card p:first-of-type { color: var(--text); font-weight: 500; }
+.notice-card .text-link { font-size: 11px; margin-top: 3px; color: var(--accent); display: inline-flex; align-items: center; gap: 4px; }
+.recent-panel ol { list-style: none; padding: 0; margin: 0; }
+.recent-panel li { display: flex; align-items: start; gap: 10px; margin-top: 16px; }
+.recent-number { flex: 0 0 18px; white-space: nowrap; font: 13px "Oxanium-Medium"; color: #d7b1bf; line-height: 1.7; }
+.recent-panel h3 { margin: 0; font-size: 11px; line-height: 1.7; font-weight: 500; }
+.recent-panel a:hover h3 { color: var(--accent); }
+.recent-panel time { color: var(--muted); font: 9px "Oxanium-Medium"; }
+.archive-panel > a { display: flex; justify-content: space-between; margin-top: 14px; font-size: 11px; }
+.archive-panel > a span:last-child { color: var(--muted); font-size: 10px; }
+.archive-panel > a:hover { color: var(--accent); }
+.quote-card { position: relative; overflow: hidden; padding: 22px 25px 26px; background: linear-gradient(135deg, var(--accent-soft), var(--card)); }
+.quote-mark { font-family: Georgia, serif; font-size: 50px; line-height: 1; color: #ddb4c0; }
+.quote-card p { margin: -4px 0 15px; font-size: 15px; line-height: 1.8; color: var(--accent); font-weight: 500; }
+.quote-source { font: 7px "Oxanium-Medium"; letter-spacing: .14em; color: var(--muted); }
+.quote-flower { position: absolute; right: -13px; bottom: -42px; font-size: 130px; color: #e6b4c41a; line-height: 1.2; }
+.site-notes { text-align: center; color: var(--muted); padding: 4px 0; }
+.site-notes > span:first-child { font-size: 18px; color: #91ae92; }
+.site-notes p { font-size: 11px; margin: 5px 0; }
+.site-notes > span:last-child { font-size: 9px; opacity: .7; }
+</style>

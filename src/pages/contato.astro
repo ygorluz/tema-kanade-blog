@@ -1,0 +1,77 @@
+---
+import { withBase } from "../lib/urls";
+import BlogLayout from "../layouts/BlogLayout.astro";
+import contatoData from "../data/contato.json";
+import siteCfg from "../data/siteConfig.json";
+
+const email = contatoData.email || siteCfg.contact?.email || "contato@exemplo.com";
+---
+<BlogLayout title="Contato" heroTitle="Entre em Contato" heroSubtitle="Tem uma dúvida, sugestão ou quer apenas bater um papo? Escreva para nós.">
+  <section class="card page-card contact-card">
+    <div class="contact-header">
+      <span class="eyebrow">FALE CONOSCO</span>
+      <h2>Vamos conversar? <span class="accent">✿</span></h2>
+      <p>{contatoData.subtitle || "Fique à vontade para mandar sua mensagem. Adoramos trocar ideias com nossos leitores."}</p>
+    </div>
+
+    <div class="contact-grid">
+      <div class="contact-box">
+        <span class="icon-[lucide--mail]"></span>
+        <strong>E-mail Direto</strong>
+        <p><a href={`mailto:${email}`}>{email}</a></p>
+        <small>{contatoData.response_time || "Respondemos em até 24 a 48 horas úteis."}</small>
+      </div>
+
+      <div class="contact-box">
+        <span class="icon-[basil--comment-solid]"></span>
+        <strong>Mural de Recados</strong>
+        <p>Deixe um recado público</p>
+        <a class="btn secondary" href={withBase("/messages/")}>Ir para o Mural →</a>
+      </div>
+    </div>
+
+    <div class="social-section">
+      <h3>Nos acompanhe nas redes</h3>
+      <div class="social-links">
+        {siteCfg.social?.github && (
+          <a class="btn" href={siteCfg.social.github} target="_blank" rel="noopener noreferrer">
+            <span class="icon-[jam--github]"></span> GitHub
+          </a>
+        )}
+        {siteCfg.social?.instagram && (
+          <a class="btn secondary" href={siteCfg.social.instagram} target="_blank" rel="noopener noreferrer">
+            <span class="icon-[lucide--instagram]"></span> Instagram
+          </a>
+        )}
+        {siteCfg.social?.twitter && (
+          <a class="btn secondary" href={siteCfg.social.twitter} target="_blank" rel="noopener noreferrer">
+            <span class="icon-[lucide--twitter]"></span> Twitter / X
+          </a>
+        )}
+        <a class="btn secondary" href={withBase("/rss.xml")}>
+          <span class="icon-[lucide--rss]"></span> RSS Feed
+        </a>
+      </div>
+    </div>
+  </section>
+</BlogLayout>
+<style>
+.contact-card { padding: 35px; }
+.contact-header .eyebrow { font-size: 9px; letter-spacing: .15em; color: var(--accent); }
+.contact-header h2 { font-size: 26px; margin: 8px 0 10px; }
+.contact-header p { color: var(--muted); font-size: 13px; line-height: 1.8; margin-bottom: 25px; }
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 25px 0 35px; }
+.contact-box { background: var(--accent-soft); border-radius: 14px; padding: 24px; text-align: center; }
+.contact-box span { font-size: 32px; color: var(--accent); display: block; margin-bottom: 10px; }
+.contact-box strong { font-size: 15px; display: block; margin-bottom: 6px; }
+.contact-box p { margin: 0 0 10px; font-size: 13px; color: var(--text); }
+.contact-box a { color: var(--accent); }
+.contact-box small { font-size: 11px; color: var(--muted); display: block; }
+.social-section { border-top: 1px dashed var(--line); padding-top: 25px; text-align: center; }
+.social-section h3 { font-size: 15px; margin-bottom: 16px; font-weight: 500; }
+.social-links { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+@media (max-width: 600px) {
+  .contact-card { padding: 22px; }
+  .contact-grid { grid-template-columns: 1fr; }
+}
+</style>

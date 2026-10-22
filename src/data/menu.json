@@ -1,0 +1,7 @@
+[
+  { "name": "Início", "icon": "icon-[bx--bxs-home-circle]", "url": "/" },
+  { "name": "Artigos", "icon": "icon-[material-symbols--article]", "url": "/posts/" },
+  { "name": "Mural", "icon": "icon-[basil--comment-solid]", "url": "/messages/" },
+  { "name": "Sobre", "icon": "icon-[mynaui--indifferent-ghost-solid]", "url": "/sobre/" },
+  { "name": "Contato", "icon": "icon-[lucide--mail]", "url": "/contato/" }
+]

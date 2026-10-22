@@ -1,0 +1,63 @@
+---
+import { withBase } from "../lib/urls";
+import BlogLayout from "../layouts/BlogLayout.astro";
+import { friends } from "../data/friends";
+---
+<BlogLayout title="Links & Projetos" heroTitle="Projetos e Inspirações" heroSubtitle="Conectando ferramentas, ideias e iniciativas que tornam a internet melhor.">
+  <section class="card page-card">
+    <div class="page-heading">
+      <span class="eyebrow">FERRAMENTAS & LINKS</span>
+      <h2>Ecossistema & Inspirações</h2>
+      <p>Projetos de código aberto e tecnologias que tornam a experiência deste blog possível.</p>
+    </div>
+    <div class="friend-grid">
+      {friends.map(friend => (
+        <a class:list={["friend-card", friend.color]} href={friend.url} target="_blank" rel="noopener noreferrer">
+          <span class:list={["friend-icon", friend.icon]} aria-hidden="true"></span>
+          <span class="friend-arrow icon-[lucide--arrow-up-right]" aria-hidden="true"></span>
+          <h3>{friend.name}</h3>
+          <p>{friend.description}</p>
+          <span class="friend-label">{friend.label}</span>
+        </a>
+      ))}
+    </div>
+    <div class="section-rule"></div>
+    <h3 class="panel-title"><span class="icon-[lucide--link]" aria-hidden="true"></span>Parcerias e Troca de Links</h3>
+    <p class="friend-copy">Tem um blog pessoal, projeto independente ou publicação técnica? Adoramos conhecer e divulgar novos criadores de conteúdo da comunidade.</p>
+    <div class="site-intro">
+      <span>Nome:</span>
+      <strong>Kanade Blog</strong>
+      <span>Descrição:</span>
+      <strong>Blog estético, acolhedor e minimalista de tecnologia e ideias</strong>
+      <span>Avatar:</span>
+      <a href={withBase("/images/avatar.svg")}>Ver avatar oficial ↗</a>
+    </div>
+    <a class="btn secondary" href={withBase("/contato/")}>
+      <span class="icon-[lucide--mail]" aria-hidden="true"></span>Entre em contato para parcerias
+    </a>
+  </section>
+</BlogLayout>
+<style>
+.page-heading { margin-bottom: 25px; }
+.page-heading .eyebrow { font-size: 10px; letter-spacing: .15em; color: var(--accent); }
+.page-heading h2 { font-size: 24px; margin: 6px 0 8px; }
+.page-heading p { color: var(--muted); font-size: 13px; margin: 0; }
+.friend-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+.friend-card { position: relative; padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: var(--card); }
+.friend-card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow); }
+.friend-icon { display: block; font-size: 33px; color: #9c82b5; margin-bottom: 17px; }
+.friend-arrow { position: absolute; top: 22px; right: 19px; color: var(--muted); }
+.friend-card.green .friend-icon { color: #66a28c; }
+.friend-card.blue .friend-icon { color: #64a9c0; }
+.friend-card.pink .friend-icon { color: var(--accent); }
+.friend-card h3 { font-family: "Oxanium-Medium"; font-size: 18px; margin: 8px 0; }
+.friend-card p { color: var(--muted); font-size: 11px; line-height: 1.8; margin: 7px 0 16px; }
+.friend-label { display: inline-block; color: var(--accent); background: var(--accent-soft); border-radius: 5px; padding: 2px 7px; font-size: 9px; }
+.section-rule { height: 1px; border-bottom: 1px dashed var(--line); margin: 30px 0; }
+.friend-copy { color: var(--muted); font-size: 13px; line-height: 1.9; }
+.site-intro { display: grid; grid-template-columns: 85px 1fr; gap: 12px; padding: 20px; background: var(--bg); border-radius: 12px; font-size: 12px; margin: 20px 0; }
+.site-intro > span { color: var(--muted); }
+.site-intro strong { font-weight: 500; }
+.site-intro a { color: var(--accent); }
+@media(max-width:580px) { .friend-grid { grid-template-columns: 1fr; } }
+</style>

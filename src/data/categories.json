@@ -1,0 +1,22 @@
+[
+  {
+    "name": "Tecnologia",
+    "slug": "tecnologia",
+    "description": "Artigos sobre desenvolvimento web, ferramentas modernas e inovação."
+  },
+  {
+    "name": "Criatividade",
+    "slug": "criatividade",
+    "description": "Reflexões, escrita, ideias e novas formas de ver o mundo."
+  },
+  {
+    "name": "Design",
+    "slug": "design",
+    "description": "Minimalismo, estética visual, tipografia e interfaces agradáveis."
+  },
+  {
+    "name": "Produtividade",
+    "slug": "produtividade",
+    "description": "Métodos, hábitos e equilíbrio para render bem com tranquilidade."
+  }
+]
